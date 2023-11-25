@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import time
 from enum import Enum
 from typing import Optional
@@ -25,6 +27,24 @@ class Dog(BaseModel):
 
     pk: Optional[int] = Field(None, title="Идентификатор")
     name: str = Field(..., title="Имя собаки")
+    kind: DogType = Field(..., title="Порода собаки")
+
+
+class DogName(BaseModel):
+    """
+    Модель собаки (имя).
+    """
+
+    pk: Optional[int] = Field(None, title="Идентификатор")
+    name: str = Field(..., title="Имя собаки")
+
+
+class DogKind(BaseModel):
+    """
+    Модель собаки (порода).
+    """
+
+    pk: Optional[int] = Field(None, title="Идентификатор")
     kind: DogType = Field(..., title="Порода собаки")
 
 
@@ -117,7 +137,7 @@ def get_dog_by_pk(pk: int) -> Optional[Dog]:
 
 
 @app.patch("/dog/{pk}", response_model=Dog)
-def update_dog(pk: int, dog: Dog) -> Optional[Dog]:
+def update_dog(pk: int, dog: Dog | DogName | DogKind) -> Optional[Dog]:
     """
     Обновление собаки по идентификатору.
 
